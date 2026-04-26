@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Mid-Term Comprehensive Mock Exam (60 Qs)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 24px 16px 32px;
+        }
+
+        .quiz-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: none;
+            max-width: 520px;
+            width: 100%;
+            padding: 18px 16px 20px;
+            display: flex;
+            flex-direction: column;
+            min-height: 640px;
+        }
+
+        .quiz-header {
+            text-align: left;
+            margin-bottom: 16px;
+        }
+
+        .quiz-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #232323;
+            margin-bottom: 4px;
+        }
+
+        .quiz-subtitle {
+            font-size: 13px;
+            color: #9d9d9d;
+        }
+
+        .progress-text {
+            text-align: left;
+            font-size: 13px;
+            color: #9d9d9d;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .question-text {
+            font-size: 16px;
+            font-weight: 500;
+            color: #2a2a2a;
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 16px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .options::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .options::-webkit-scrollbar-track {
+            background: #f0f0f0;
+            border-radius: 3px;
+        }
+
+        .options::-webkit-scrollbar-thumb {
+            background: #c0c0c0;
+            border-radius: 3px;
+        }
+
+        .options::-webkit-scrollbar-thumb:hover {
+            background: #a0a0a0;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 14px 16px;
+            border: 1px solid #f0f0f0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: #f8f8f8;
+        }
+
+        .option:hover:not(.selected):not(.disabled) {
+            border-color: #e6e6e6;
+            background: #f6f6f6;
+        }
+
+        .option.selected {
+            border-color: #d0d0d0;
+            background: #dedede;
+        }
+
+        .option.correct,
+        .option.wrong {
+            border-color: #f0f0f0;
+            background: #f8f8f8;
+        }
+
+        .option.disabled {
+            cursor: default;
+        }
+
+        .option-label {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            margin-right: 10px;
+            flex-shrink: 0;
+            color: #9d9d9d;
+            width: 22px;
+        }
+
+        .option.selected .option-label {
+            color: #3a3a3a;
+        }
+
+        .option.disabled .option-text {
+            color: #bdbdbd;
+        }
+
+        .option.disabled .option-label {
+            color: #bdbdbd;
+        }
+
+        .option-text {
+            flex: 1;
+            font-size: 15px;
+            color: #3a3a3a;
+        }
+
+
+        .feedback-card {
+            padding: 14px 16px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            opacity: 0;
+            transform: translateY(8px);
+            transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+
+        .feedback-card.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .feedback-card.correct {
+            background: #bfeacb;
+        }
+
+        .feedback-card.wrong {
+            background: #fff7f7;
+        }
+
+        .feedback-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .feedback-header.correct {
+            color: #697b6e;
+        }
+
+        .feedback-header.wrong {
+            color: #a42d22;
+        }
+
+        .feedback-icon {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .feedback-answer {
+            font-size: 15px;
+            color: #2a2a2a;
+        }
+
+        .feedback-text {
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .feedback-card.correct .feedback-text {
+            color: #444443;
+        }
+
+        .feedback-card.wrong .feedback-text {
+            color: #2e2e2f;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 24px;
+            min-height: 52px;
+        }
+
+        .btn {
+            padding: 10px 22px;
+            border-radius: 999px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+            min-width: 120px;
+        }
+
+        .btn-secondary {
+            background: #ffffff;
+            color: #6b7280;
+            border: 1px solid #e2e2e2;
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: #e5e5e5;
+        }
+
+        .btn-secondary:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background: #424cf7;
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            opacity: 0.95;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(66, 76, 247, 0.25);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+
+        .completion-container {
+            text-align: center;
+            display: none;
+        }
+
+        .completion-container.show {
+            display: block;
+        }
+
+        .completion-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        .completion-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 12px;
+        }
+
+        .completion-subtitle {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: #f8f9ff;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .stat-card.score {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .stat-card.score .stat-label {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .stat-card.score .stat-value {
+            color: white;
+        }
+
+        .completion-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .weak-areas-section,
+        .wrong-answers-section {
+            margin-bottom: 24px;
+            text-align: left;
+            display: none;
+        }
+
+        .weak-areas-section.show,
+        .wrong-answers-section.show {
+            display: block;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 12px;
+            text-align: left;
+        }
+
+        .section-subtitle {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 12px;
+        }
+
+        .weak-area-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 10px;
+        }
+
+        .weak-area-card {
+            background: #fff3f3;
+            border: 1px solid #ffd3d3;
+            padding: 12px 14px;
+            border-radius: 10px;
+        }
+
+        .weak-area-name {
+            font-size: 13px;
+            color: #7a2020;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .weak-area-count {
+            font-size: 18px;
+            font-weight: 600;
+            color: #c12d1f;
+        }
+
+        .verdict-banner {
+            grid-column: 1 / -1;
+            padding: 14px 18px;
+            border-radius: 12px;
+            margin-bottom: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            text-align: center;
+            line-height: 1.4;
+        }
+        .verdict-ready { background: #e6f7ec; border: 1px solid #a7e3bf; color: #1a6d3b; }
+        .verdict-almost { background: #fff8e1; border: 1px solid #ffd866; color: #8a5a00; }
+        .verdict-needs-work { background: #fff0f0; border: 1px solid #ffbaba; color: #a52020; }
+
+        .analysis-summary {
+            grid-column: 1 / -1;
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .topic-card {
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1px solid;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .topic-card.strong { background: #e6f7ec; border-color: #a7e3bf; }
+        .topic-card.ok { background: #fff8e1; border-color: #ffd866; }
+        .topic-card.weak { background: #fff0f0; border-color: #ffbaba; }
+        .topic-card.unanswered { background: #f1f1f1; border-color: #d4d4d4; color: #555; }
+
+        .topic-card-name { font-size: 13px; font-weight: 600; }
+        .topic-card.strong .topic-card-name { color: #1a6d3b; }
+        .topic-card.ok .topic-card-name { color: #8a5a00; }
+        .topic-card.weak .topic-card-name { color: #a52020; }
+
+        .topic-card-score { font-size: 18px; font-weight: 700; }
+        .topic-card.strong .topic-card-score { color: #1a6d3b; }
+        .topic-card.ok .topic-card-score { color: #b67800; }
+        .topic-card.weak .topic-card-score { color: #c12d1f; }
+
+        .topic-card-pct { font-size: 12px; opacity: 0.85; }
+
+        .topic-bar {
+            height: 5px;
+            border-radius: 3px;
+            background: rgba(0,0,0,0.08);
+            margin-top: 4px;
+            overflow: hidden;
+        }
+        .topic-bar-fill { height: 100%; border-radius: 3px; transition: width 0.4s ease; }
+        .topic-card.strong .topic-bar-fill { background: #22c55e; }
+        .topic-card.ok .topic-bar-fill { background: #f59e0b; }
+        .topic-card.weak .topic-bar-fill { background: #ef4444; }
+        .topic-card.unanswered .topic-bar-fill { background: #aaa; }
+
+        .resume-banner {
+            display: none;
+            background: #eef2ff;
+            border: 1px solid #c7d2fe;
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin-bottom: 14px;
+            font-size: 13px;
+            color: #3730a3;
+        }
+        .resume-banner.show { display: block; }
+        .resume-banner-title { font-weight: 600; margin-bottom: 4px; color: #1e1b4b; }
+        .resume-banner-text { margin-bottom: 10px; }
+        .resume-banner-buttons { display: flex; gap: 8px; flex-wrap: wrap; }
+        .resume-banner-buttons button {
+            flex: 1;
+            min-width: 120px;
+            padding: 8px 14px;
+            border-radius: 8px;
+            border: 1px solid transparent;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .resume-btn-primary { background: #4f46e5; color: white; }
+        .resume-btn-primary:hover { background: #4338ca; }
+        .resume-btn-secondary { background: white; border-color: #c7d2fe; color: #3730a3; }
+        .resume-btn-secondary:hover { background: #eef2ff; }
+
+        .save-indicator {
+            position: fixed;
+            bottom: 16px;
+            right: 16px;
+            background: rgba(34, 197, 94, 0.95);
+            color: white;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 500;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            pointer-events: none;
+            z-index: 1000;
+        }
+        .save-indicator.show { opacity: 1; transform: translateY(0); }
+
+        .wrong-answer-card {
+            background: #fff7f7;
+            border: 1px solid #fad4d4;
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin-bottom: 10px;
+        }
+
+        .wrong-answer-topic {
+            display: inline-block;
+            font-size: 11px;
+            background: #ffe4e4;
+            color: #7a2020;
+            padding: 2px 8px;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        .wrong-answer-question {
+            font-size: 14px;
+            font-weight: 500;
+            color: #2a2a2a;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .wrong-answer-row {
+            font-size: 13px;
+            margin-bottom: 4px;
+            line-height: 1.4;
+        }
+
+        .wrong-answer-label {
+            font-weight: 600;
+            color: #555;
+            margin-right: 6px;
+        }
+
+        .wrong-answer-user {
+            color: #a42d22;
+        }
+
+        .wrong-answer-correct {
+            color: #1f7a3a;
+        }
+
+        .wrong-answer-explanation {
+            font-size: 12px;
+            color: #4a4a4a;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid #f3dcdc;
+            line-height: 1.5;
+        }
+
+        .hint-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: #4e4e4e;
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+        }
+
+        .hint-toggle .chevron {
+            display: inline-block;
+            transition: transform 0.2s ease;
+        }
+
+        .hint-toggle.open .chevron {
+            transform: rotate(180deg);
+        }
+
+        .hint-panel {
+            padding: 12px 14px;
+            background: #ebecf8;
+            border-radius: 12px;
+            display: none;
+            opacity: 0;
+            transform: translateY(6px);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .hint-panel.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hint-title {
+            font-weight: 600;
+            font-size: 13px;
+            color: #4e4e4e;
+            margin-bottom: 6px;
+        }
+
+        .hint-text {
+            font-size: 13px;
+            color: #474749;
+            line-height: 1.5;
+        }
+
+        .hint-slot {
+            min-height: 72px;
+        }
+
+        .quiz-footer {
+            margin-top: auto;
+        }
+
+        .question-container {
+            display: none;
+        }
+
+        .question-container.active {
+            display: block;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.18/dist/katex.min.css">
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="quiz-header">
+            <div class="quiz-title">Math Mid-Term Comprehensive Mock Exam (60 Qs)</div>
+            <div class="quiz-subtitle">Based on 1 source</div>
+        </div>
+
+        <div id="resume-banner" class="resume-banner">
+            <div class="resume-banner-title">Welcome back!</div>
+            <div id="resume-banner-text" class="resume-banner-text"></div>
+            <div class="resume-banner-buttons">
+                <button class="resume-btn-primary" onclick="resumeFromSaved()">Resume</button>
+                <button class="resume-btn-secondary" onclick="discardSavedAndStart()">Start Over</button>
+            </div>
+        </div>
+
+        <div id="quiz-content">
+            <!-- Questions will be rendered here -->
+        </div>
+
+        <div id="save-indicator" class="save-indicator">Progress saved</div>
+
+        <div id="completion-screen" class="completion-container">
+            <div class="completion-icon">🎉</div>
+            <div class="completion-title">You did it! Quiz Complete.</div>
+            <div class="completion-subtitle">Here's how you performed</div>
+
+            <div class="stats-grid">
+                <div class="stat-card score">
+                    <div class="stat-label">Score</div>
+                    <div class="stat-value" id="score-value">0/60</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Accuracy</div>
+                    <div class="stat-value" id="accuracy-value">0%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Right</div>
+                    <div class="stat-value" id="right-value">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Wrong</div>
+                    <div class="stat-value" id="wrong-value">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Skipped</div>
+                    <div class="stat-value" id="skipped-value">0</div>
+                </div>
+            </div>
+
+            <div id="weak-areas-section" class="weak-areas-section">
+                <div class="section-title">Topic Analysis Report</div>
+                <div class="section-subtitle">Red = focus here first · Amber = review · Green = solid</div>
+                <div id="weak-areas-grid" class="weak-area-grid"></div>
+            </div>
+
+            <div id="wrong-answers-section" class="wrong-answers-section">
+                <div class="section-title">Wrong Answers Review</div>
+                <div id="wrong-answers-list"></div>
+            </div>
+
+            <div class="completion-buttons">
+                <button class="btn btn-secondary" onclick="reviewQuiz()">Review Quiz</button>
+                <button class="btn btn-primary" onclick="retakeQuiz()">Retake Quiz</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.18/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.18/dist/contrib/auto-render.min.js"></script>
+    <script>
+        const questions = [{"topic": "Variation", "question": "A1.1 (Easy) — Variation: y varies directly as x. When x = 4, y = 12. Find y when x = 7.", "options": ["15", "18", "21", "28"], "correctIndex": 2, "hint": "Direct variation: y = kx. Find k first.", "correctExplanation": "y = kx. From x=4, y=12: k = 3. So y = 3 × 7 = 21.", "wrongExplanation": "k = 12/4 = 3, then y = 3 × 7 = 21."}, {"topic": "Variation", "question": "A1.2 (Medium) — Variation: y varies directly as x². When x = 3, y = 18. Find y when x = 5.", "options": ["30", "45", "50", "75"], "correctIndex": 2, "hint": "y = kx². Solve for k, then substitute.", "correctExplanation": "18 = k(9) → k = 2. y = 2(25) = 50.", "wrongExplanation": "k = 2 from the given pair; then y = 2 × 5² = 50."}, {"topic": "Variation", "question": "A1.3 (Hard) — Joint variation: z varies jointly as x and y². When x = 2, y = 3, z = 36. Find z when x = 5, y = 2.", "options": ["20", "40", "60", "90"], "correctIndex": 1, "hint": "z = kxy². Use given values to find k.", "correctExplanation": "36 = k(2)(9) = 18k → k = 2. z = 2(5)(4) = 40.", "wrongExplanation": "Solve k = 2; then z = 2 × 5 × 2² = 40."}, {"topic": "Straight line", "question": "A2.1 (Easy) — Straight line: Gradient of the line through (1, 2) and (5, 10)?", "options": ["1", "2", "4", "8"], "correctIndex": 1, "hint": "m = rise / run.", "correctExplanation": "m = (10 − 2) / (5 − 1) = 8/4 = 2.", "wrongExplanation": "Rise/run: 8/4 = 2."}, {"topic": "Straight line", "question": "A2.2 (Medium) — Straight line: Equation of the line through (2, 3) and (4, 7).", "options": ["y = 2x − 1", "y = 2x + 1", "y = x + 1", "y = ½x + 2"], "correctIndex": 0, "hint": "Find gradient, then use y − y₁ = m(x − x₁).", "correctExplanation": "m = 2; y − 3 = 2(x − 2) → y = 2x − 1.", "wrongExplanation": "m = 2, then point-slope gives y = 2x − 1."}, {"topic": "Straight line", "question": "A2.3 (Hard) — Straight line: Find the equation of the line perpendicular to 2x + 3y = 6, passing through (1, −1).", "options": ["y = (3/2)x − 5/2", "y = (−2/3)x − 1/3", "y = (2/3)x − 5/3", "y = (−3/2)x + 1/2"], "correctIndex": 0, "hint": "Perpendicular gradients multiply to −1.", "correctExplanation": "Gradient of 2x + 3y = 6 is −2/3, so perpendicular gradient is 3/2. y + 1 = (3/2)(x − 1) → y = (3/2)x − 5/2.", "wrongExplanation": "Perpendicular gradient = 3/2; use (1,−1): y = (3/2)x − 5/2."}, {"topic": "Quadratic function", "question": "A3.1 (Easy) — Quadratic: Find the vertex of y = (x − 2)² + 3.", "options": ["(2, 3)", "(−2, 3)", "(2, −3)", "(3, 2)"], "correctIndex": 0, "hint": "Vertex form y = (x − h)² + k has vertex (h, k).", "correctExplanation": "Vertex is (h, k) = (2, 3).", "wrongExplanation": "Read off h = 2, k = 3: vertex is (2, 3)."}, {"topic": "Quadratic function", "question": "A3.2 (Medium) — Quadratic: Find the minimum value of f(x) = x² − 6x + 11.", "options": ["−11", "2", "3", "11"], "correctIndex": 1, "hint": "Complete the square.", "correctExplanation": "(x − 3)² + 2; minimum value is 2.", "wrongExplanation": "Completing the square: (x − 3)² + 2 → min value is 2."}, {"topic": "Quadratic function", "question": "A3.3 (Hard) — Quadratic: For what values of k does x² + kx + 9 = 0 have equal roots?", "options": ["k = 3 only", "k = ±3", "k = ±6", "k = ±9"], "correctIndex": 2, "hint": "Equal roots ⇔ discriminant = 0.", "correctExplanation": "b² − 4ac = 0 → k² − 36 = 0 → k = ±6.", "wrongExplanation": "Discriminant = k² − 36 = 0, giving k = ±6."}, {"topic": "Locus", "question": "A4.1 (Easy) — Locus: Find the locus of points equidistant from A(2, 0) and B(6, 0).", "options": ["x = 3", "x = 4", "y = 4", "y = x"], "correctIndex": 1, "hint": "Equidistant ⇔ perpendicular bisector.", "correctExplanation": "Midpoint is (4, 0); line is vertical: x = 4.", "wrongExplanation": "Perpendicular bisector of AB: x = 4."}, {"topic": "Locus", "question": "A4.2 (Medium) — Locus: Find the locus of a point 3 units from the origin.", "options": ["x + y = 3", "x² + y² = 3", "x² + y² = 9", "y = 3"], "correctIndex": 2, "hint": "Fixed distance from a point = circle.", "correctExplanation": "Circle centre (0,0), radius 3: x² + y² = 9.", "wrongExplanation": "Equation of circle: x² + y² = r² = 9."}, {"topic": "Locus", "question": "A4.3 (Hard) — Locus: P moves such that PA = 2·PB where A(0, 0) and B(3, 0). Find the equation of the locus.", "options": ["x² + y² − 8x + 12 = 0", "x² + y² = 4", "x² + y² − 4x + 4 = 0", "x² + y² − 6x + 9 = 0"], "correctIndex": 0, "hint": "Square both sides of √(x² + y²) = 2·√((x − 3)² + y²).", "correctExplanation": "x² + y² = 4[(x − 3)² + y²] = 4x² − 24x + 36 + 4y². Simplify: 3x² + 3y² − 24x + 36 = 0 → x² + y² − 8x + 12 = 0 (circle centre (4,0), radius 2).", "wrongExplanation": "Square both sides, expand, simplify: x² + y² − 8x + 12 = 0."}, {"topic": "Parameter", "question": "A5.1 (Easy) — Parameter: Given x = t − 3 and y = 2t + 1, express y in terms of x.", "options": ["y = 2x − 5", "y = 2x + 7", "y = 2x + 1", "y = x + 4"], "correctIndex": 1, "hint": "Solve for t from the x equation, then substitute.", "correctExplanation": "t = x + 3; y = 2(x + 3) + 1 = 2x + 7.", "wrongExplanation": "t = x + 3 → y = 2x + 7."}, {"topic": "Parameter", "question": "A5.2 (Medium) — Parameter: Given x = t² and y = 2t, express y² in terms of x.", "options": ["y² = x", "y² = 2x", "y² = 4x", "y² = x²"], "correctIndex": 2, "hint": "Square y, then use x = t².", "correctExplanation": "y² = 4t² = 4x.", "wrongExplanation": "y = 2t → y² = 4t² = 4x."}, {"topic": "Parameter", "question": "A5.3 (Hard) — Parameter: Given x = 2t + 1 and y = t² − 1, eliminate t to express y in terms of x.", "options": ["y = (x² − 2x − 3) / 4", "y = (x² − 1) / 4", "y = (x² + 2x − 3) / 4", "y = x²/4 − 1"], "correctIndex": 0, "hint": "Solve t = (x − 1)/2, then square.", "correctExplanation": "t = (x − 1)/2, so y = ((x − 1)²)/4 − 1 = (x² − 2x + 1 − 4)/4 = (x² − 2x − 3)/4.", "wrongExplanation": "Substitute t = (x − 1)/2 into y = t² − 1 and simplify."}, {"topic": "Quadratic sketch", "question": "A6.1 (Easy) — Quadratic sketch: The curve y = (x − 2)(x + 3) crosses the y-axis at?", "options": ["(0, −6)", "(0, 6)", "(0, −1)", "(0, 5)"], "correctIndex": 0, "hint": "Set x = 0.", "correctExplanation": "y = (−2)(3) = −6, so (0, −6).", "wrongExplanation": "At x = 0: y = −6."}, {"topic": "Quadratic sketch", "question": "A6.2 (Medium) — Quadratic sketch: Find the axis of symmetry of y = x² − 4x + 1.", "options": ["x = −2", "x = 2", "x = 4", "x = −4"], "correctIndex": 1, "hint": "Axis of symmetry: x = −b / (2a).", "correctExplanation": "x = −(−4) / (2 × 1) = 2.", "wrongExplanation": "x = −b/(2a) = 4/2 = 2."}, {"topic": "Quadratic sketch", "question": "A6.3 (Hard) — Quadratic sketch: Find the maximum point of y = −(x − 1)² + 4.", "options": ["(−1, 4)", "(1, 4)", "(1, −4)", "(4, 1)"], "correctIndex": 1, "hint": "Vertex form with a < 0 gives a maximum at (h, k).", "correctExplanation": "Opens down (a = −1); maximum point is (h, k) = (1, 4).", "wrongExplanation": "Read vertex form: max at (1, 4)."}, {"topic": "Logical reasoning", "question": "A7.1 (Easy) — Logic: What is the converse of 'If it rains, then the ground is wet'?", "options": ["If it does not rain, then the ground is not wet.", "If the ground is wet, then it rains.", "If the ground is not wet, then it does not rain.", "It rains and the ground is wet."], "correctIndex": 1, "hint": "Converse swaps p and q in 'if p then q'.", "correctExplanation": "Converse: 'If q, then p' → 'If the ground is wet, then it rains.'", "wrongExplanation": "Swap hypothesis and conclusion: 'If the ground is wet, then it rains.'"}, {"topic": "Logical reasoning", "question": "A7.2 (Medium) — Logic: What is the contrapositive of 'If x > 5, then x > 3'?", "options": ["If x > 3, then x > 5.", "If x ≤ 3, then x ≤ 5.", "If x ≤ 5, then x ≤ 3.", "If x > 5, then x ≤ 3."], "correctIndex": 1, "hint": "Contrapositive: negate both parts AND swap them.", "correctExplanation": "Negate and swap: 'If x ≤ 3, then x ≤ 5' (logically equivalent to the original).", "wrongExplanation": "Contrapositive of 'if p then q' is 'if not q then not p'."}, {"topic": "Logical reasoning", "question": "A7.3 (Hard) — Logic: Let p: 'x is a multiple of 4' and q: 'x is even'. Which is true?", "options": ["p ⇒ q only", "q ⇒ p only", "Both p ⇒ q and q ⇒ p", "Neither implication is true"], "correctIndex": 0, "hint": "Is every multiple of 4 even? Is every even number a multiple of 4?", "correctExplanation": "Every multiple of 4 is even, so p ⇒ q. But 6 is even and not a multiple of 4, so q does not imply p.", "wrongExplanation": "Multiples of 4 are always even; but 6 is a counter-example for the converse. Only p ⇒ q."}, {"topic": "Number bases", "question": "A8.1 (Easy) — Number bases: Convert 101101 (base 2) to base 10.", "options": ["37", "41", "45", "53"], "correctIndex": 2, "hint": "Sum place values where digit is 1.", "correctExplanation": "32 + 8 + 4 + 1 = 45.", "wrongExplanation": "Powers of 2 for positions of '1's: 32 + 8 + 4 + 1 = 45."}, {"topic": "Number bases", "question": "A8.2 (Medium) — Number bases: Convert 27 (base 10) to base 2.", "options": ["10111", "11001", "11011", "11111"], "correctIndex": 2, "hint": "Largest power of 2 ≤ 27 is 16; subtract and repeat.", "correctExplanation": "27 = 16 + 8 + 2 + 1 = 11011 (base 2).", "wrongExplanation": "Bits at positions 4, 3, 1, 0: 11011."}, {"topic": "Number bases", "question": "A8.3 (Hard) — Number bases: Compute 101 + 111 in base 2.", "options": ["1010", "1011", "1100", "1110"], "correctIndex": 2, "hint": "Convert to base 10, add, convert back — or do column addition with carries.", "correctExplanation": "5 + 7 = 12 = 1100 (base 2).", "wrongExplanation": "5 + 7 = 12; 12 = 8 + 4 = 1100."}, {"topic": "Networking", "question": "A9.1 (Easy) — Networking: How many edges does a complete graph on 5 vertices (K₅) have?", "options": ["5", "8", "10", "20"], "correctIndex": 2, "hint": "Formula: n(n − 1) / 2.", "correctExplanation": "5 × 4 / 2 = 10.", "wrongExplanation": "Complete graph on n vertices: n(n − 1)/2 = 10."}, {"topic": "Networking", "question": "A9.2 (Medium) — Networking: In any graph, the sum of all vertex degrees equals which of the following?", "options": ["The number of vertices", "The number of edges", "Twice the number of edges", "Half the number of edges"], "correctIndex": 2, "hint": "Each edge contributes to the degree of two vertices.", "correctExplanation": "Handshaking Lemma: sum of degrees = 2 × edges.", "wrongExplanation": "Each edge is counted twice (once at each endpoint), so sum = 2E."}, {"topic": "Networking", "question": "A9.3 (Hard) — Networking: A graph has 6 vertices, each of degree 3. How many edges does it have?", "options": ["6", "9", "12", "18"], "correctIndex": 1, "hint": "Use Handshaking Lemma: sum of degrees = 2E.", "correctExplanation": "Sum of degrees = 6 × 3 = 18 = 2E → E = 9.", "wrongExplanation": "Sum of degrees = 18, so edges = 18/2 = 9."}, {"topic": "Standard deviation", "question": "A10.1 (Easy) — Statistics: Find the mean of {2, 4, 6, 8, 10}.", "options": ["5", "6", "7", "8"], "correctIndex": 1, "hint": "Sum ÷ count.", "correctExplanation": "(2 + 4 + 6 + 8 + 10) / 5 = 30 / 5 = 6.", "wrongExplanation": "Total is 30, count is 5; mean = 6."}, {"topic": "Standard deviation", "question": "A10.2 (Medium) — Statistics: Find the standard deviation of {2, 4, 6, 8, 10}.", "options": ["2", "2√2", "4", "√10"], "correctIndex": 1, "hint": "σ = √(Σ(x − mean)² / n).", "correctExplanation": "Mean = 6. Squared deviations: 16, 4, 0, 4, 16; sum = 40; variance = 8; σ = √8 = 2√2.", "wrongExplanation": "Variance = 8, so SD = √8 = 2√2."}, {"topic": "Standard deviation", "question": "A10.3 (Hard) — Statistics: What is the standard deviation of the data set {10, 10, 10, 10, 10}?", "options": ["0", "1", "10", "√10"], "correctIndex": 0, "hint": "All values equal the mean — no spread.", "correctExplanation": "Every deviation is 0, so variance = 0 and σ = 0.", "wrongExplanation": "No variability means SD = 0."}, {"topic": "Linear inequalities", "question": "B1.1 (Easy) — Linear inequalities: The region R satisfies y ≥ 0, x ≤ 5, and y ≤ x. Which point lies in R?", "options": ["(−1, 0)", "(6, 1)", "(3, 2)", "(2, 3)"], "correctIndex": 2, "hint": "Test each point in all three inequalities.", "correctExplanation": "(3, 2): 2 ≥ 0 ✓, 3 ≤ 5 ✓, 2 ≤ 3 ✓.", "wrongExplanation": "Only (3, 2) satisfies all three."}, {"topic": "Linear inequalities", "question": "B1.2 (Medium) — Linear inequalities: Which point lies inside the region defined by x + y ≤ 4, x ≥ 0, y ≥ 0?", "options": ["(0, 0)", "(2, 3)", "(5, 0)", "(−1, 2)"], "correctIndex": 0, "hint": "Test each point in every inequality.", "correctExplanation": "(0, 0): 0 ≤ 4 ✓, 0 ≥ 0 ✓, 0 ≥ 0 ✓. (2, 3) fails x + y ≤ 4; (5, 0) fails x + y ≤ 4; (−1, 2) fails x ≥ 0.", "wrongExplanation": "Only (0, 0) satisfies all three."}, {"topic": "Linear inequalities", "question": "B1.3 (Hard) — Linear programming: Maximise P = 2x + 3y subject to x + y ≤ 6, x ≥ 0, y ≥ 0.", "options": ["12", "15", "18", "24"], "correctIndex": 2, "hint": "Maximum occurs at a corner of the feasible region.", "correctExplanation": "Corners: (0,0), (6,0), (0,6). P values: 0, 12, 18. Max = 18 at (0, 6).", "wrongExplanation": "Test each corner; max is P = 18 at (0, 6)."}, {"topic": "Matrix inverse", "question": "B2.1 (Easy) — Matrix: Find the determinant of [[3, 1], [2, 4]].", "options": ["6", "10", "14", "−10"], "correctIndex": 1, "hint": "det = ad − bc.", "correctExplanation": "3(4) − 1(2) = 12 − 2 = 10.", "wrongExplanation": "ad − bc = 12 − 2 = 10."}, {"topic": "Matrix inverse", "question": "B2.2 (Medium) — Matrix: Find the inverse of [[2, 1], [3, 2]].", "options": ["[[2, −1], [−3, 2]]", "[[2, 1], [3, 2]]", "[[−2, 1], [3, −2]]", "[[1, −1], [−3, 1]]"], "correctIndex": 0, "hint": "Inverse = (1/det) × [[d, −b], [−c, a]].", "correctExplanation": "det = 1; swap diagonal, negate off-diagonal: [[2, −1], [−3, 2]].", "wrongExplanation": "det = 1, so inverse is [[2, −1], [−3, 2]]."}, {"topic": "Matrix inverse", "question": "B2.3 (Hard) — Matrix: Find the inverse of A = [[1, 2], [3, 4]].", "options": ["[[−2, 1], [1.5, −0.5]]", "[[4, −2], [−3, 1]]", "[[2, −1], [−1.5, 0.5]]", "[[0.5, 1.5], [−1, −2]]"], "correctIndex": 0, "hint": "det A = −2; then A⁻¹ = (1/det) × [[d, −b], [−c, a]].", "correctExplanation": "A⁻¹ = (−1/2) × [[4, −2], [−3, 1]] = [[−2, 1], [1.5, −0.5]].", "wrongExplanation": "det = −2; divide the adjugate by −2: [[−2, 1], [1.5, −0.5]]."}, {"topic": "Simultaneous equations", "question": "B3.1 (Easy) — Simultaneous: Solve 2x + y = 7, x + y = 4.", "options": ["x = 2, y = 3", "x = 3, y = 1", "x = 1, y = 3", "x = 4, y = −1"], "correctIndex": 1, "hint": "Subtract the second from the first.", "correctExplanation": "Subtracting gives x = 3; then y = 4 − 3 = 1.", "wrongExplanation": "x = 3, y = 1."}, {"topic": "Simultaneous equations", "question": "B3.2 (Medium) — Simultaneous: Solve 2x + 3y = 13, x + y = 5.", "options": ["x = 2, y = 3", "x = 3, y = 2", "x = 4, y = 1", "x = 1, y = 4"], "correctIndex": 0, "hint": "Express x from the simpler equation and substitute.", "correctExplanation": "x = 5 − y; 2(5 − y) + 3y = 13 → y = 3, x = 2.", "wrongExplanation": "y = 3, x = 2."}, {"topic": "Simultaneous equations", "question": "B3.3 (Hard) — Simultaneous: Solve 3x + 4y = 11, 5x − 2y = 1.", "options": ["x = 1, y = 2", "x = 2, y = 1", "x = 3, y = 0", "x = −1, y = 3"], "correctIndex": 0, "hint": "Multiply the second equation by 2 and add to eliminate y.", "correctExplanation": "Double second eq: 10x − 4y = 2. Add to 3x + 4y = 11: 13x = 13 → x = 1, then y = 2.", "wrongExplanation": "x = 1, y = 2."}, {"topic": "Insurance", "question": "B4.1 (Easy) — Insurance: Fire premium rate is RM0.40 per RM100. Insured value RM150,000. Find the annual premium.", "options": ["RM400", "RM600", "RM750", "RM1,500"], "correctIndex": 1, "hint": "Premium = (insured value ÷ 100) × rate.", "correctExplanation": "(150,000 ÷ 100) × 0.40 = 1500 × 0.40 = RM600.", "wrongExplanation": "1500 × RM0.40 = RM600."}, {"topic": "Insurance", "question": "B4.2 (Medium) — Insurance: Life insurance premium is RM25 per RM1,000 insured. Find the annual premium for a RM80,000 policy.", "options": ["RM200", "RM2,000", "RM3,200", "RM20,000"], "correctIndex": 1, "hint": "Premium = (sum insured ÷ 1,000) × rate.", "correctExplanation": "(80,000 ÷ 1,000) × 25 = 80 × 25 = RM2,000.", "wrongExplanation": "80 × RM25 = RM2,000."}, {"topic": "Insurance", "question": "B4.3 (Hard) — Insurance: Motor comprehensive premium is 2.5% of market value. For an RM45,000 car with 30% NCD (No-Claim Discount), find the premium payable.", "options": ["RM337.50", "RM787.50", "RM1,125", "RM1,462.50"], "correctIndex": 1, "hint": "Find basic premium, then apply NCD (pay only 70%).", "correctExplanation": "Basic = 0.025 × 45,000 = RM1,125. After 30% NCD: 1,125 × 0.70 = RM787.50.", "wrongExplanation": "Basic RM1,125; NCD keeps 70%: RM787.50."}, {"topic": "Plan & elevation", "question": "B5.1 (Easy) — Plan & elevation: A cuboid measures 4 × 3 × 2 cm (length × width × height). Area of the front elevation (the 4 × 2 face)?", "options": ["6 cm²", "8 cm²", "12 cm²", "24 cm²"], "correctIndex": 1, "hint": "Front elevation = length × height.", "correctExplanation": "4 × 2 = 8 cm².", "wrongExplanation": "Length × height = 8 cm²."}, {"topic": "Plan & elevation", "question": "B5.2 (Medium) — Plan & elevation: For the same cuboid (4 × 3 × 2), find the area of the side elevation (width × height).", "options": ["6 cm²", "8 cm²", "12 cm²", "24 cm²"], "correctIndex": 0, "hint": "Side elevation = width × height.", "correctExplanation": "3 × 2 = 6 cm².", "wrongExplanation": "Width × height = 6 cm²."}, {"topic": "Plan & elevation", "question": "B5.3 (Hard) — Plan & elevation: A cuboid of dimensions 5 × 4 × 3 cm rests on its 5 × 4 face. What is the area of the plan (top view looking straight down)?", "options": ["12 cm²", "15 cm²", "20 cm²", "60 cm²"], "correctIndex": 2, "hint": "Plan view shows length × width.", "correctExplanation": "Plan = 5 × 4 = 20 cm².", "wrongExplanation": "Top-down view is the 5 × 4 rectangle: 20 cm²."}, {"topic": "Quadratic graph", "question": "B6.1 (Easy) — Quadratic graph: Find the roots of y = x² − 5x + 6.", "options": ["x = −2, −3", "x = 2, 3", "x = 1, 6", "x = −1, −6"], "correctIndex": 1, "hint": "Factorise.", "correctExplanation": "(x − 2)(x − 3) = 0 → x = 2 or x = 3.", "wrongExplanation": "Factoring gives x = 2, 3."}, {"topic": "Quadratic graph", "question": "B6.2 (Medium) — Quadratic graph: Find the roots of x² − 2x − 15 = 0.", "options": ["x = 3, −5", "x = 5, −3", "x = −3, −5", "x = 3, 5"], "correctIndex": 1, "hint": "Which pair multiplies to −15 and adds to −2?", "correctExplanation": "(x − 5)(x + 3) = 0 → x = 5 or x = −3.", "wrongExplanation": "Factors (x − 5)(x + 3): roots 5, −3."}, {"topic": "Quadratic graph", "question": "B6.3 (Hard) — Quadratic graph: Find the roots of 2x² − 5x − 3 = 0.", "options": ["x = 3, −1/2", "x = 3, 1/2", "x = −3, 1/2", "x = 1, −3"], "correctIndex": 0, "hint": "Factor as (2x + 1)(x − 3) or use the quadratic formula.", "correctExplanation": "(2x + 1)(x − 3) = 0 → x = −1/2 or x = 3.", "wrongExplanation": "Roots: 3 and −1/2."}, {"topic": "Probability", "question": "B7.1 (Easy) — Probability: A bag contains 3 red and 5 blue marbles. Find P(red).", "options": ["3/5", "3/8", "5/8", "1/3"], "correctIndex": 1, "hint": "Favourable ÷ total.", "correctExplanation": "3 + 5 = 8 total; P(red) = 3/8.", "wrongExplanation": "P(red) = 3/8."}, {"topic": "Probability", "question": "B7.2 (Medium) — Probability: Two fair dice are rolled. Find P(sum = 7).", "options": ["1/6", "1/9", "7/36", "1/12"], "correctIndex": 0, "hint": "Count favourable outcomes: (1,6), (2,5), (3,4), (4,3), (5,2), (6,1).", "correctExplanation": "6 favourable out of 36: 6/36 = 1/6.", "wrongExplanation": "6/36 = 1/6."}, {"topic": "Probability", "question": "B7.3 (Hard) — Probability: A card is drawn from a standard 52-card deck. Find P(Ace OR Heart).", "options": ["1/13", "4/13", "17/52", "1/4"], "correctIndex": 1, "hint": "Use P(A or B) = P(A) + P(B) − P(A and B).", "correctExplanation": "4/52 + 13/52 − 1/52 = 16/52 = 4/13. (Subtract Ace of Hearts, counted twice.)", "wrongExplanation": "Inclusion-exclusion: (4 + 13 − 1) / 52 = 16/52 = 4/13."}, {"topic": "Variation", "question": "B8.1 (Easy) — Variation: y varies directly as x. When x = 2, y = 10. Find y when x = 5.", "options": ["20", "25", "30", "50"], "correctIndex": 1, "hint": "y = kx.", "correctExplanation": "k = 5; y = 5 × 5 = 25.", "wrongExplanation": "k = 5, so y = 25."}, {"topic": "Variation", "question": "B8.2 (Medium) — Variation: z varies inversely as w. When w = 4, z = 6. Find z when w = 8.", "options": ["3", "12", "2", "24"], "correctIndex": 0, "hint": "z = k / w; so zw = k (constant).", "correctExplanation": "k = 24; z = 24 / 8 = 3.", "wrongExplanation": "zw = 24, so z = 3."}, {"topic": "Variation", "question": "B8.3 (Hard) — Variation: p varies directly as q² and inversely as r. When q = 2, r = 4, p = 3. Find p when q = 6, r = 9.", "options": ["6", "9", "12", "18"], "correctIndex": 2, "hint": "p = k q² / r.", "correctExplanation": "3 = k(4)/4 = k → k = 3. p = 3 × 36 / 9 = 12.", "wrongExplanation": "k = 3, then p = 3 × 36 / 9 = 12."}, {"topic": "Matrix operations", "question": "B9.1 (Easy) — Matrix: Compute A + B for A = [[1, 2], [3, 4]], B = [[5, 6], [7, 8]].", "options": ["[[6, 8], [10, 12]]", "[[5, 12], [21, 32]]", "[[4, 4], [4, 4]]", "[[6, 10], [8, 12]]"], "correctIndex": 0, "hint": "Add entry-by-entry.", "correctExplanation": "[[1+5, 2+6], [3+7, 4+8]] = [[6, 8], [10, 12]].", "wrongExplanation": "Entry-by-entry addition: [[6, 8], [10, 12]]."}, {"topic": "Matrix operations", "question": "B9.2 (Medium) — Matrix: For A = [[1, 2], [3, 4]], compute 2A.", "options": ["[[1, 2], [3, 4]]", "[[2, 2], [3, 4]]", "[[2, 4], [6, 8]]", "[[2, 4], [3, 4]]"], "correctIndex": 2, "hint": "Scalar multiplication: multiply every entry by 2.", "correctExplanation": "2A = [[2, 4], [6, 8]].", "wrongExplanation": "Double every entry: [[2, 4], [6, 8]]."}, {"topic": "Matrix operations", "question": "B9.3 (Hard) — Matrix: Compute AB for A = [[1, 2], [3, 4]] and B = [[2, 0], [1, 1]].", "options": ["[[4, 2], [10, 4]]", "[[2, 2], [6, 4]]", "[[2, 0], [3, 4]]", "[[3, 2], [7, 5]]"], "correctIndex": 0, "hint": "Row × column rule.", "correctExplanation": "Top-left: 1(2)+2(1) = 4. Top-right: 1(0)+2(1) = 2. Bottom-left: 3(2)+4(1) = 10. Bottom-right: 3(0)+4(1) = 4.", "wrongExplanation": "AB = [[4, 2], [10, 4]]."}, {"topic": "Financial management", "question": "B10.1 (Easy) — Financial: Find the simple interest on RM1,000 at 5% per annum for 2 years.", "options": ["RM50", "RM100", "RM150", "RM200"], "correctIndex": 1, "hint": "I = PRT (R as decimal).", "correctExplanation": "1000 × 0.05 × 2 = RM100.", "wrongExplanation": "PRT = RM100."}, {"topic": "Financial management", "question": "B10.2 (Medium) — Financial: A loan of RM10,000 at 5% per annum simple interest for 3 years. Find the total interest.", "options": ["RM500", "RM1,000", "RM1,500", "RM1,576"], "correctIndex": 2, "hint": "I = PRT.", "correctExplanation": "10,000 × 0.05 × 3 = RM1,500.", "wrongExplanation": "Simple interest = RM1,500."}, {"topic": "Financial management", "question": "B10.3 (Hard) — Financial: RM5,000 is invested at 6% per annum, compounded annually for 2 years. Find the total compound interest earned.", "options": ["RM600", "RM618", "RM636", "RM1,200"], "correctIndex": 1, "hint": "A = P(1 + r)ⁿ; interest = A − P.", "correctExplanation": "A = 5000 × (1.06)² = 5000 × 1.1236 = RM5,618. Interest = 5,618 − 5,000 = RM618.", "wrongExplanation": "A − P = 5,618 − 5,000 = RM618."}];
+        const totalQuestions = questions.length;
+        let currentQuestionIndex = 0;
+        let userAnswers = []; // Store user's answers {questionIndex, selectedIndex, isCorrect}
+        let isReviewMode = false;
+        let quizCompleted = false;
+
+        const QUIZ_TITLE = "Math Mid-Term Comprehensive Mock Exam (60 Qs)";
+        const STORAGE_VERSION = 1;
+        const STORAGE_KEY = 'quizProgress::' + QUIZ_TITLE + '::' + totalQuestions;
+
+        function saveProgress() {
+            try {
+                const state = {
+                    v: STORAGE_VERSION,
+                    title: QUIZ_TITLE,
+                    n: totalQuestions,
+                    currentQuestionIndex,
+                    userAnswers,
+                    options: questions.map(q => q.options),
+                    correctIndices: questions.map(q => q.correctIndex),
+                    isReviewMode,
+                    quizCompleted,
+                    savedAt: Date.now()
+                };
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+                showSaveIndicator();
+            } catch (e) {
+                console.warn('Save failed:', e);
+            }
+        }
+
+        function loadProgress() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (!raw) return null;
+                const state = JSON.parse(raw);
+                if (!state || state.v !== STORAGE_VERSION) return null;
+                if (state.title !== QUIZ_TITLE) return null;
+                if (state.n !== totalQuestions) return null;
+                return state;
+            } catch (e) {
+                return null;
+            }
+        }
+
+        function clearProgress() {
+            try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+        }
+
+        function hasMeaningfulProgress(state) {
+            if (!state || !Array.isArray(state.userAnswers)) return false;
+            return state.userAnswers.some(a => a !== undefined && a !== null);
+        }
+
+        let saveIndicatorTimer = null;
+        function showSaveIndicator() {
+            const el = document.getElementById('save-indicator');
+            if (!el) return;
+            el.classList.add('show');
+            clearTimeout(saveIndicatorTimer);
+            saveIndicatorTimer = setTimeout(() => el.classList.remove('show'), 900);
+        }
+
+        function formatSavedAgo(ts) {
+            if (!ts) return '';
+            const diff = Math.floor((Date.now() - ts) / 1000);
+            if (diff < 60) return 'just now';
+            if (diff < 3600) return Math.floor(diff / 60) + ' min ago';
+            if (diff < 86400) return Math.floor(diff / 3600) + ' hr ago';
+            return Math.floor(diff / 86400) + ' day(s) ago';
+        }
+
+        function showResumeBanner(state) {
+            const banner = document.getElementById('resume-banner');
+            const text = document.getElementById('resume-banner-text');
+            if (!banner || !text) return;
+            const answered = state.userAnswers.filter(a => a !== undefined && a !== null).length;
+            const pos = (state.currentQuestionIndex || 0) + 1;
+            const when = formatSavedAgo(state.savedAt);
+            const status = state.quizCompleted ? 'You finished this quiz' : `You stopped at question ${pos} of ${totalQuestions}`;
+            text.textContent = `${status} · ${answered} answered · saved ${when}.`;
+            banner.classList.add('show');
+        }
+
+        function hideResumeBanner() {
+            const banner = document.getElementById('resume-banner');
+            if (banner) banner.classList.remove('show');
+        }
+
+        function resumeFromSaved() {
+            const state = loadProgress();
+            if (!state) { hideResumeBanner(); startFresh(); return; }
+            // Restore shuffled options so answer indices match what user saw before.
+            if (Array.isArray(state.options)) {
+                state.options.forEach((opts, i) => { if (questions[i]) questions[i].options = opts; });
+            }
+            if (Array.isArray(state.correctIndices)) {
+                state.correctIndices.forEach((idx, i) => { if (questions[i]) questions[i].correctIndex = idx; });
+            }
+            userAnswers = state.userAnswers || [];
+            currentQuestionIndex = state.currentQuestionIndex || 0;
+            isReviewMode = !!state.isReviewMode;
+            quizCompleted = !!state.quizCompleted;
+            hideResumeBanner();
+            if (quizCompleted) {
+                showCompletionScreen();
+            } else {
+                renderQuestion();
+            }
+        }
+
+        function discardSavedAndStart() {
+            clearProgress();
+            hideResumeBanner();
+            startFresh();
+        }
+
+        function startFresh() {
+            currentQuestionIndex = 0;
+            userAnswers = [];
+            isReviewMode = false;
+            quizCompleted = false;
+            shuffleOptions();
+            renderQuestion();
+        }
+
+        function renderMath(target) {
+            if (!target || typeof renderMathInElement !== 'function') return;
+            renderMathInElement(target, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false},
+                    {left: '\(', right: '\)', display: false},
+                    {left: '\[', right: '\]', display: true}
+                ],
+                throwOnError: false
+            });
+        }
+
+        function shuffleOptions() {
+            questions.forEach(q => {
+                if (!q.options || q.options.length < 2) return;
+                const correctOption = q.options[q.correctIndex];
+                for (let i = q.options.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [q.options[i], q.options[j]] = [q.options[j], q.options[i]];
+                }
+                q.correctIndex = q.options.indexOf(correctOption);
+            });
+        }
+
+        function initQuiz() {
+            const saved = loadProgress();
+            if (saved && hasMeaningfulProgress(saved)) {
+                showResumeBanner(saved);
+                // Render the first question in the background so something is visible behind the banner.
+                shuffleOptions();
+                renderQuestion();
+            } else {
+                shuffleOptions();
+                renderQuestion();
+            }
+        }
+
+        function renderQuestion() {
+            const quizContent = document.getElementById('quiz-content');
+            const question = questions[currentQuestionIndex];
+            const userAnswer = userAnswers[currentQuestionIndex];
+
+            const isAnswered = userAnswer !== undefined;
+
+            // Determine button states
+            const showPrevious = currentQuestionIndex > 0;
+            const showNext = isAnswered && currentQuestionIndex < totalQuestions - 1;
+            const showFinish = isAnswered && currentQuestionIndex === totalQuestions - 1 && !isReviewMode;
+            const showFinishReview = isReviewMode && currentQuestionIndex === totalQuestions - 1;
+            const showHint = !!question.hint;
+
+            let optionsHtml = '';
+            question.options.forEach((option, index) => {
+                const letter = String.fromCharCode(65 + index); // A, B, C, D
+
+                if (isAnswered) {
+                    if (index === question.correctIndex) {
+                        const correctExplain = question.correctExplanation || question.explanation || '';
+                        optionsHtml += `
+                            <div class="feedback-card correct show">
+                                <div class="feedback-answer">${letter}. ${option}</div>
+                                <div class="feedback-header correct">
+                                    <span class="feedback-icon">✓</span>
+                                    <span>Right answer</span>
+                                </div>
+                                <div class="feedback-text">${correctExplain}</div>
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    if (!userAnswer.isCorrect && index === userAnswer.selectedIndex) {
+                        const wrongExplain = question.wrongExplanation || question.explanation || '';
+                        optionsHtml += `
+                            <div class="feedback-card wrong show">
+                                <div class="feedback-answer">${letter}. ${option}</div>
+                                <div class="feedback-header wrong">
+                                    <span class="feedback-icon">✕</span>
+                                    <span>Not quite</span>
+                                </div>
+                                <div class="feedback-text">${wrongExplain}</div>
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    optionsHtml += `
+                        <div class="option disabled" data-index="${index}">
+                            <span class="option-label">${letter}.</span>
+                            <span class="option-text">${option}</span>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const optionClass = index === (userAnswer ? userAnswer.selectedIndex : -1) ? 'option selected' : 'option';
+                optionsHtml += `
+                    <div class="${optionClass}" onclick="selectAnswer(${index})" data-index="${index}">
+                        <span class="option-label">${letter}.</span>
+                        <span class="option-text">${option}</span>
+                    </div>
+                `;
+            });
+
+            let hintHtml = '';
+            if (showHint) {
+                hintHtml = `
+                    <button class="hint-toggle" id="hint-toggle" onclick="toggleHint()">
+                        <span>Hint</span>
+                        <span class="chevron">⌃</span>
+                    </button>
+                    <div id="hint-panel" class="hint-panel">
+                        <div class="hint-title">Hint</div>
+                        <div class="hint-text">${question.hint}</div>
+                    </div>
+                `;
+            }
+
+            let buttonsHtml = `
+                <div class="quiz-footer">
+                    <div class="buttons">
+                        <div style="display: flex; gap: 12px;">
+                            <button class="btn btn-secondary" onclick="previousQuestion()" ${showPrevious ? '' : 'disabled'}>
+                                Previous
+                            </button>
+                        </div>
+                        <div>
+                            ${showNext ? '<button class="btn btn-primary" onclick="nextQuestion()">Next</button>' : ''}
+                            ${showFinish ? '<button class="btn btn-primary" onclick="finishQuiz()">Finish Quiz</button>' : ''}
+                            ${showFinishReview ? '<button class="btn btn-primary" onclick="finishReview()">Finish Review</button>' : ''}
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            quizContent.innerHTML = `
+                <div class="progress-text">${currentQuestionIndex + 1} / ${totalQuestions}</div>
+                <div class="question-text">${question.question}</div>
+                <div class="options">
+                    ${optionsHtml}
+                </div>
+                <div class="hint-slot">
+                    ${hintHtml}
+                </div>
+                ${buttonsHtml}
+            `;
+            renderMath(quizContent);
+        }
+
+        function selectAnswer(selectedIndex) {
+            const question = questions[currentQuestionIndex];
+            const isCorrect = selectedIndex === question.correctIndex;
+
+            // Store the answer
+            userAnswers[currentQuestionIndex] = {
+                questionIndex: currentQuestionIndex,
+                selectedIndex: selectedIndex,
+                isCorrect: isCorrect
+            };
+
+            saveProgress();
+
+            // Re-render to show feedback
+            renderQuestion();
+        }
+
+        function toggleHint() {
+            const hintPanel = document.getElementById('hint-panel');
+            const hintToggle = document.getElementById('hint-toggle');
+            if (hintPanel) {
+                hintPanel.classList.toggle('show');
+            }
+            if (hintToggle) {
+                hintToggle.classList.toggle('open');
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < totalQuestions - 1) {
+                currentQuestionIndex++;
+                saveProgress();
+                renderQuestion();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                saveProgress();
+                renderQuestion();
+            }
+        }
+
+        function finishQuiz() {
+            quizCompleted = true;
+            saveProgress();
+            showCompletionScreen();
+        }
+
+        function showCompletionScreen() {
+            const quizContent = document.getElementById('quiz-content');
+            const completionScreen = document.getElementById('completion-screen');
+
+            // Calculate stats
+            const answeredQuestions = userAnswers.filter(a => a !== undefined);
+            const correctAnswers = userAnswers.filter(a => a && a.isCorrect).length;
+            const wrongAnswers = userAnswers.filter(a => a && !a.isCorrect).length;
+            const skipped = totalQuestions - answeredQuestions.length;
+            const accuracy = answeredQuestions.length > 0
+                ? Math.round((correctAnswers / answeredQuestions.length) * 100)
+                : 0;
+
+            // Update stats
+            document.getElementById('score-value').textContent = `${correctAnswers}/${totalQuestions}`;
+            document.getElementById('accuracy-value').textContent = `${accuracy}%`;
+            document.getElementById('right-value').textContent = correctAnswers;
+            document.getElementById('wrong-value').textContent = wrongAnswers;
+            document.getElementById('skipped-value').textContent = skipped;
+
+            renderWeakAreas();
+            renderWrongAnswers();
+
+            // Show completion screen
+            quizContent.style.display = 'none';
+            completionScreen.classList.add('show');
+        }
+
+        function escapeHtml(str) {
+            if (str === undefined || str === null) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function renderWeakAreas() {
+            const section = document.getElementById('weak-areas-section');
+            const grid = document.getElementById('weak-areas-grid');
+
+            // Aggregate per-topic: total questions, correct, answered.
+            const topicStats = {};
+            questions.forEach((q, i) => {
+                const topic = q.topic || 'Untagged';
+                if (!topicStats[topic]) {
+                    topicStats[topic] = { total: 0, correct: 0, answered: 0 };
+                }
+                topicStats[topic].total++;
+                const ans = userAnswers[i];
+                if (ans) {
+                    topicStats[topic].answered++;
+                    if (ans.isCorrect) topicStats[topic].correct++;
+                }
+            });
+
+            const topics = Object.keys(topicStats);
+            if (topics.length === 0) {
+                section.classList.remove('show');
+                grid.innerHTML = '';
+                return;
+            }
+
+            const overallAnswered = userAnswers.filter(a => a !== undefined).length;
+            const overallCorrect = userAnswers.filter(a => a && a.isCorrect).length;
+            const overallPct = overallAnswered > 0 ? Math.round(overallCorrect / overallAnswered * 100) : 0;
+
+            function classify(s) {
+                if (s.answered === 0) return 'unanswered';
+                const pct = s.correct / s.answered;
+                if (pct >= 0.80) return 'strong';
+                if (pct >= 0.50) return 'ok';
+                return 'weak';
+            }
+
+            const counts = { strong: 0, ok: 0, weak: 0, unanswered: 0 };
+            topics.forEach(t => { counts[classify(topicStats[t])]++; });
+
+            let verdictClass, verdictText;
+            if (overallPct >= 80 && counts.weak === 0) {
+                verdictClass = 'verdict-ready';
+                verdictText = `Ready — ${overallPct}% overall, ${counts.strong} strong topic${counts.strong===1?'':'s'}. Keep amber topics sharp.`;
+            } else if (overallPct >= 60) {
+                verdictClass = 'verdict-almost';
+                verdictText = `Almost there — ${overallPct}% overall. ${counts.weak} weak topic${counts.weak===1?'':'s'} need focused revision.`;
+            } else {
+                verdictClass = 'verdict-needs-work';
+                verdictText = `More revision needed — ${overallPct}% overall. ${counts.weak} weak, ${counts.ok} shaky. Focus on red topics below first.`;
+            }
+
+            const classOrder = { weak: 0, ok: 1, unanswered: 2, strong: 3 };
+            topics.sort((a, b) => {
+                const ca = classify(topicStats[a]);
+                const cb = classify(topicStats[b]);
+                if (classOrder[ca] !== classOrder[cb]) return classOrder[ca] - classOrder[cb];
+                const pa = topicStats[a].answered ? topicStats[a].correct / topicStats[a].answered : 0;
+                const pb = topicStats[b].answered ? topicStats[b].correct / topicStats[b].answered : 0;
+                return pa - pb;
+            });
+
+            const verdictHtml = `<div class="verdict-banner ${verdictClass}">${escapeHtml(verdictText)}</div>`;
+            const summaryHtml = `<div class="analysis-summary">${counts.strong} solid · ${counts.ok} shaky · ${counts.weak} weak${counts.unanswered ? ' · ' + counts.unanswered + ' not attempted' : ''}</div>`;
+
+            const cardsHtml = topics.map(topic => {
+                const s = topicStats[topic];
+                const cls = classify(s);
+                const pct = s.answered > 0 ? Math.round(s.correct / s.answered * 100) : 0;
+                const pctText = s.answered > 0 ? `${pct}% correct` : 'Not attempted';
+                return `
+                    <div class="topic-card ${cls}">
+                        <div class="topic-card-name">${escapeHtml(topic)}</div>
+                        <div class="topic-card-score">${s.correct}/${s.total}</div>
+                        <div class="topic-card-pct">${pctText}</div>
+                        <div class="topic-bar"><div class="topic-bar-fill" style="width: ${pct}%"></div></div>
+                    </div>
+                `;
+            }).join('');
+
+            grid.innerHTML = verdictHtml + summaryHtml + cardsHtml;
+            section.classList.add('show');
+        }
+
+        function renderWrongAnswers() {
+            const section = document.getElementById('wrong-answers-section');
+            const list = document.getElementById('wrong-answers-list');
+
+            const wrongs = [];
+            userAnswers.forEach((ans, i) => {
+                if (ans && !ans.isCorrect) {
+                    wrongs.push({ index: i, answer: ans });
+                }
+            });
+
+            if (wrongs.length === 0) {
+                section.classList.remove('show');
+                list.innerHTML = '';
+                return;
+            }
+
+            list.innerHTML = wrongs.map(({ index, answer }) => {
+                const q = questions[index];
+                const userLetter = String.fromCharCode(65 + answer.selectedIndex);
+                const correctLetter = String.fromCharCode(65 + q.correctIndex);
+                const userOption = q.options[answer.selectedIndex];
+                const correctOption = q.options[q.correctIndex];
+                const explanation = q.wrongExplanation || q.correctExplanation || q.explanation || '';
+                const topicTag = q.topic ? `<div class="wrong-answer-topic">${escapeHtml(q.topic)}</div>` : '';
+
+                return `
+                    <div class="wrong-answer-card">
+                        ${topicTag}
+                        <div class="wrong-answer-question">Q${index + 1}. ${escapeHtml(q.question)}</div>
+                        <div class="wrong-answer-row">
+                            <span class="wrong-answer-label">Your answer:</span>
+                            <span class="wrong-answer-user">${userLetter}. ${escapeHtml(userOption)}</span>
+                        </div>
+                        <div class="wrong-answer-row">
+                            <span class="wrong-answer-label">Correct answer:</span>
+                            <span class="wrong-answer-correct">${correctLetter}. ${escapeHtml(correctOption)}</span>
+                        </div>
+                        ${explanation ? `<div class="wrong-answer-explanation">${escapeHtml(explanation)}</div>` : ''}
+                    </div>
+                `;
+            }).join('');
+
+            section.classList.add('show');
+            renderMath(list);
+        }
+
+        function reviewQuiz() {
+            isReviewMode = true;
+            currentQuestionIndex = 0;
+            const quizContent = document.getElementById('quiz-content');
+            const completionScreen = document.getElementById('completion-screen');
+
+            quizContent.style.display = 'block';
+            completionScreen.classList.remove('show');
+            renderQuestion();
+        }
+
+        function finishReview() {
+            showCompletionScreen();
+        }
+
+        function retakeQuiz() {
+            isReviewMode = false;
+            currentQuestionIndex = 0;
+            userAnswers = [];
+            quizCompleted = false;
+            clearProgress();
+            shuffleOptions();
+            const quizContent = document.getElementById('quiz-content');
+            const completionScreen = document.getElementById('completion-screen');
+
+            quizContent.style.display = 'block';
+            completionScreen.classList.remove('show');
+            renderQuestion();
+        }
+
+        // Initialize quiz on page load
+        initQuiz();
+    </script>
+</body>
+</html>
